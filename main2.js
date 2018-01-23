@@ -1,1 +1,2 @@
-console.log("多个文件2")
+console.log("入口文件22222222")
+require("./a")
