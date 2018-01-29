@@ -80,8 +80,13 @@ module.exports = {
     //   }
     // }),
     new ExtractTextPlugin('css/[name].css'),
-    // new CleanWebpackPlugin([
-    //   'dist',
-    // ])
+    new CleanWebpackPlugin([
+      'dist',
+    ],{
+      root:     __dirname,
+      exclude:  ['common1.js'],
+      verbose:  true,
+      dry:      false
+    })
   ]
 }
