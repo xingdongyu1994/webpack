@@ -1,7 +1,9 @@
 var OpenBrowserPlugin = require('open-browser-webpack-plugin')
 var HtmlwebpackPlugin = require('html-webpack-plugin')
 var path = require('path')
+const webpack = require('webpack')
 var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin")
+var UglifyJsPlugin = require("webpack/lib/optimize/UglifyJsPlugin")
 var ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin')
 var ExtractTextPlugin = require("extract-text-webpack-plugin")
 const CleanWebpackPlugin = require('clean-webpack-plugin')
@@ -21,6 +23,7 @@ let cleanOptions = {
 module.exports = {
   entry: {
     bundle1: './main1.js',
+    three: ['jquery']
     // bundle2: './main2.js',
     // common1: ['jquery'],
   },
@@ -63,11 +66,33 @@ module.exports = {
       title: 'MyApp',
       filename: 'index.html'
     }),
-    new CommonsChunkPlugin({
-      name: ['chunk', 'common1'],
-      // filename: 'chunk.js',
-      minChunks: 2
+    new webpack.DllPlugin({
+      path: __dirname +'/dist/manifest.json',
+      name: '[name]',
+      context: __dirname,
     }),
+    new CommonsChunkPlugin({
+      name: 'three',
+      filename: 'jsthree/three.js',
+      minChunks: function(module) {
+        // let flag =  module.context && module.context.indexOf('node_modules') !== -1;
+        console.log("大大",module.context);
+        // return flag;
+      }
+
+    }),
+    // new CommonsChunkPlugin({
+    //   name: ['chunk', 'common1'],
+    //   // filename: 'chunk.js',
+    //   minChunks: 2
+    // }),
+    // new UglifyJsPlugin({
+    //    comments: false,
+    //    compress: {
+    //      warnings: true,
+    //      drop_console: false,
+    //    }
+    // }),
     // new ParallelUglifyPlugin({
     //   cacheDir: '.cache/',
     //   uglifyJS:{
@@ -84,7 +109,7 @@ module.exports = {
       'dist',
     ],{
       root:     __dirname,
-      exclude:  ['common1.js'],
+      // exclude:  ['common1.js'],
       verbose:  true,
       dry:      false
     })

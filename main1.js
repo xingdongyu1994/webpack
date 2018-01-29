@@ -10,7 +10,7 @@ console.log("入口文件11111111`")
 
 require.ensure([], function(require) {
    require('./a')
-   require('./b')
+  //  require('./b')
 }, 'chunkensure1')
 if(false){
   require.ensure([], function(require) {

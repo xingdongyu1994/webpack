@@ -1,1 +1,2 @@
-console.log("212112122111111111111111new------oooo-1")
+var $ = require('jquery')
+console.log("第三方库")
